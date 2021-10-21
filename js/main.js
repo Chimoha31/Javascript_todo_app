@@ -1,74 +1,65 @@
 'use strict';
-console.log('test');
 
-const dogs = [
-  'chako',
-  'moko',
-  'hana',
-];
+const onClickAdd = () => {
+  const inputText = document.getElementById("add_text").value;
+  document.getElementById('add_text').value = '';
 
-const [name1, ...rest] = dogs;
-const msg = `最初の愛犬が${name1}、次が${rest}`;
-console.log(msg);
-console.log(rest);
+//div生成・DOM作り
+const div = document.createElement('div');
+div.className = "list_row";
+// console.log(div);
 
-const greet = (name = 'guest') => `hello ${name}, how you doin?`;
+//liタグ生成
+const li = document.createElement('li');
+li.textContent = inputText;
+// console.log(li);
 
-console.log(greet());
+//button(完了)タグ生成
+const completeButton = document.createElement('button');
+completeButton.textContent = '完了';
 
-const num1 = [1, 2, 3, 4];
-console.log(...num1);
-console.log([...num1]);
+completeButton.addEventListener('click', () => {
+  deleteFromIncompleteList(completeButton.parentNode);
 
-const sumFunc = (num1, num2) => console.log(num1 + num2);
-sumFunc(num1[0], num1[1]);
-sumFunc(...num1);
+  const addTarget = completeButton.parentNode;
+  const text = addTarget.firstElementChild.innerText;
 
-const array = [1, 2, 3, 4, 5];
-const [num3, num4, ...num5] = array;
-console.log(num5);
+  addTarget.textContent = null;
+  const li = document.createElement('li');
+  li.innerText = text;
+  
+  // button(戻す)生成
+  const backButton = document.createElement('button');
+  backButton.innerText = '戻す';
 
-const array2 = [10, 20];
-const array3 = [30, 40];
-const arraySum = [...array2, ...array3];
-console.log(arraySum);
+  addTarget.appendChild(li);
+  addTarget.appendChild(backButton);
+  console.log(addTarget);
 
-const names = ['Chiho', 'Yayoko', 'Hana'];
-const namesArr = names.map((name, index) => {
-  return `${index+1}番目は${name}です`;
+  //完了リストに追加
+  const complete = document.getElementById('complete_list');
+  complete.appendChild(addTarget);
 });
-console.log(namesArr);
 
-const numArr = [1, 2, 3, 4, 5];
-const oddArr = [];
-const oddNum = numArr.filter((odd) => {
-  if(odd % 2 !== 0) {
-    return oddArr.push(odd);
-  }
+//button(削除)タグ生成
+const deleteButton = document.createElement('button');
+deleteButton.textContent = '削除';
+
+deleteButton.addEventListener('click', () => {
+ deleteFromIncompleteList(deleteButton.parentNode);
 });
-console.log(oddArr);
 
+//divタグの下にliタグ, buttonタグを付ける
+div.appendChild(li);
+div.appendChild(completeButton);
+div.appendChild(deleteButton);
 
-const names2 = ['Chako', 'Moko', 'じゃけぇ'];
-const newNameArr = names2.map((name2) => {
-  if(name2 == 'Chako' || name2 == 'Moko') {
-    return `${name2} さん`;
-  }else{
-    return name2;
-  }
-});
-console.log(newNameArr);
+//未完了リストにdivを付ける
+document.getElementById('incomplete_list').appendChild(div);
+};
 
-const val1 = 1 < 0 ? `trueです`:`falseです`;
-console.log(val1);
-
-const number1 = "1300";
-console.log(number1.toLocaleString());
-const formattedNum = typeof number1 === 'number' ? number1.toLocaleString() : '数値を入力してください';
-console.log(formattedNum);
-
-const checkSum = (num6, num7) => {
-  return num6 + num7 > 100 ? 'over 100' : 'less than 100';
+const deleteFromIncompleteList = (target) => {
+  document.getElementById('incomplete_list').removeChild(target);
 }
 
-console.log(checkSum(10, 89));
+document.getElementById('add_button').addEventListener('click', () => onClickAdd());
